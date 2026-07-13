@@ -1,0 +1,4 @@
+# ninja log v7
+2	109	8056258730415489	CMakeFiles/mouse_front.dir/src/main.cpp.obj	6c9073c92c3886a1
+18	244	8056258730573727	CMakeFiles/mouse_front.dir/src/Mouse.cpp.obj	c82b01bdaddb5c2b
+245	555	8056258732763408	mouse_front.exe	3e0591b8c1205ead
