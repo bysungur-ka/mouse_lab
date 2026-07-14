@@ -1,17 +1,26 @@
-#pragma once 
+#pragma once
+
+#include "GridTypes.h"
 #include "Mouse.h"
 #include "Maze.h"
 
 class Game {
 public:
-    Game(int screenWidth, int screenHeight);
+    Game();
 
-    void Update(float dt);
+    void Update();
     void Draw() const;
 
+    int GetScreenWidth() const;
+    int GetScreenHeight() const;
+
 private:
-    int screenWidth;
-    int screenHeight;
-    Mouse mouse;
     Maze maze;
+    Mouse mouse;
+
+    Action ReadInput() const;
+    Cell GetTargetCell(Action action) const;
+    void TryMoveMouse(Action action);
+
+    void DrawMouse() const;
 };

@@ -14,31 +14,9 @@ Maze::Maze() {
         "############",
     };
 
-}
+    
+    startCell = {5, 1};
 
-int Maze::GetTileSize() const{
-    return tileSize;
-}
-
-int Maze::GetRows() const{
-    return static_cast<int>(layout.size());
-}
-
-int Maze::GetCols() const{
-    return static_cast<int>(layout[0].size());
-}
-
-bool Maze::IsWallCell(int row, int col) const
-{
-    if (row < 0 || row >= GetRows()) {
-        return true;
-    }
-
-    if (col < 0 || col >= GetCols()) {
-        return true;
-    }
-
-    return layout[row][col] == '#';
 }
 
 void Maze::Draw() const
@@ -56,4 +34,37 @@ void Maze::Draw() const
             }
         }
     }
+}
+
+bool Maze::IsWallCell(Cell cell) const
+{
+    if (cell.row < 0 || cell.row >= GetRows()) {
+        return true;
+    }
+
+    if (cell.col < 0 || cell.col >= GetCols()) {
+        return true;
+    }
+
+    return layout[cell.row][cell.col] == '#';
+}
+
+int Maze::GetTileSize() const
+{
+    return tileSize;
+}
+
+int Maze::GetRows() const
+{
+    return static_cast<int>(layout.size());
+}
+
+int Maze::GetCols() const
+{
+    return static_cast<int>(layout[0].size());
+}
+
+Cell Maze::GetStartCell() const
+{
+    return startCell;
 }

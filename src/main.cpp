@@ -1,22 +1,30 @@
 #include "raylib.h"
-#include "Mouse.h"
 #include "Game.h"
 
-int main() {
-    const int screenWidth = 540, screenHeight = 315;
-    Mouse mouse;
-    InitWindow(screenWidth, screenHeight, "mouse window");
-    Game game(screenWidth, screenHeight);
+int main()
+{
+    Game game;
+
+    InitWindow(
+        game.GetScreenWidth(),
+        game.GetScreenHeight(),
+        "Mouse Maze"
+    );
+
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
-        float dt = GetFrameTime();
-        game.Update(dt);
+        game.Update();
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
+
         game.Draw();
-        EndDrawing();       
+
+        EndDrawing();
     }
+
     CloseWindow();
+
     return 0;
 }

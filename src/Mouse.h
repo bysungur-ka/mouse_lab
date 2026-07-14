@@ -1,13 +1,14 @@
 #pragma once
 
-#include "raylib.h"
+#include "GridTypes.h"
 
-struct Mouse {
-    Vector2 position;
-    Vector2 size;
-    float speed;
+class Mouse {
+public:
+    explicit Mouse(Cell startCell); //
+
+    Cell GetCell() const;
+    void MoveTo(Cell targetCell);
+
+private:
+    Cell cell;
 };
-
-void UpdateMouse(Mouse& mouse, float dt);
-void DrawMouse(const Mouse& mouse);
-void ClampMouseToScreen(Mouse& mouse, int screenWidth, int screenHeight);

@@ -1,35 +1,16 @@
 #include "Mouse.h"
-#include "raymath.h"
 
-void UpdateMouse(Mouse& mouse, float dt)
+Mouse::Mouse(Cell startCell)
+    : cell(startCell)  //при создании Mouse сразу инициализировать поле cell значением startCell
 {
-    Vector2 direction = {0.0f, 0.0f};
-    if(IsKeyDown(KEY_RIGHT)) {direction.x += 1;}
-    if(IsKeyDown(KEY_LEFT)) {direction.x -= 1;}
-    if(IsKeyDown(KEY_UP)) {direction.y -= 1;}
-    if(IsKeyDown(KEY_DOWN)) {direction.y += 1;}
-
-    if (Vector2Length(direction) > 0.0f)
-    {
-        direction = Vector2Normalize(direction);
-    }
-
-    mouse.position += direction * mouse.speed * dt;
 }
 
-void DrawMouse(const Mouse& mouse)
+Cell Mouse::GetCell() const
 {
-    DrawRectangleV(mouse.position, mouse.size, RED); 
+    return cell;
 }
 
-void ClampMouseToScreen(Mouse& mouse, int screenWidth, int screenHeight)
+void Mouse::MoveTo(Cell targetCell)
 {
-    if (mouse.position.x < 0) { mouse.position.x = 0; } 
-    if (mouse.position.x > screenWidth - mouse.size.x) {
-         mouse.position.x = screenWidth - mouse.size.x; 
-    } 
-    if (mouse.position.y > screenHeight - mouse.size.y) { 
-        mouse.position.y = screenHeight - mouse.size.y; 
-    }
-    if (mouse.position.y < 0) { mouse.position.y = 0; } 
+    cell = targetCell;
 }
