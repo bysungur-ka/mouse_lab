@@ -1,24 +1,21 @@
 #include "raylib.h"
 #include "Mouse.h"
+#include "Game.h"
 
 int main() {
     const int screenWidth = 800, screenHeight = 600;
     Mouse mouse;
-    mouse.position = {0.0f, 400.0f};
-    mouse.speed = 200.0f;
-    mouse.size = {40.0f, 40.0f};
-
     InitWindow(screenWidth, screenHeight, "mouse window");
+    Game game(screenWidth, screenHeight);
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
-        UpdateMouse(mouse, dt);
-        ClampMouseToScreen(mouse, screenWidth, screenHeight);
+        game.Update(dt);
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawMouse(mouse);
-        EndDrawing();
+        game.Draw();
+        EndDrawing();       
     }
     CloseWindow();
     return 0;
