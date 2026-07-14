@@ -19,7 +19,7 @@ void UpdateMouse(Mouse& mouse, float dt)
 
 void DrawMouse(const Mouse& mouse)
 {
-    DrawRectangleV(mouse.position, mouse.size, GRAY); 
+    DrawRectangleV(mouse.position, mouse.size, RED); 
 }
 
 void ClampMouseToScreen(Mouse& mouse, int screenWidth, int screenHeight)

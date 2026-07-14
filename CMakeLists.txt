@@ -3,5 +3,6 @@ project(mouse_front LANGUAGES CXX)
 find_package(raylib REQUIRED)
 add_executable(mouse_front src/main.cpp
     src/Mouse.cpp
-    src/Game.cpp)
+    src/Game.cpp
+    src/Maze.cpp)
 target_link_libraries(mouse_front PRIVATE raylib)

@@ -4,7 +4,7 @@ Game::Game(int screenWidth, int screenHeight){
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
 
-    mouse.position = {0.0f, 400.0f};
+    mouse.position = {40.0f, 200.0f};
     mouse.speed = 200.0f;
     mouse.size = {40.0f, 40.0f};
 }
@@ -15,5 +15,6 @@ void Game::Update(float dt) {
 }
 
 void Game::Draw() const {
+    maze.Draw();
     DrawMouse(mouse);
 }

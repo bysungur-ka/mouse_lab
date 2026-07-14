@@ -3,7 +3,7 @@
 #include "Game.h"
 
 int main() {
-    const int screenWidth = 800, screenHeight = 600;
+    const int screenWidth = 540, screenHeight = 315;
     Mouse mouse;
     InitWindow(screenWidth, screenHeight, "mouse window");
     Game game(screenWidth, screenHeight);

@@ -1,5 +1,6 @@
 #pragma once 
 #include "Mouse.h"
+#include "Maze.h"
 
 class Game {
 public:
@@ -12,4 +13,5 @@ private:
     int screenWidth;
     int screenHeight;
     Mouse mouse;
+    Maze maze;
 };
