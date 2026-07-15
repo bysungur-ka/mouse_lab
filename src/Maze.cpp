@@ -1,7 +1,8 @@
 #include "Maze.h"
 #include <raylib.h>
 
-Maze::Maze() {
+Maze::Maze()
+{
 
     tileSize = 45;
     layout = {
@@ -14,35 +15,58 @@ Maze::Maze() {
         "############",
     };
 
-    
     startCell = {5, 1};
 
+    goalCell = {1, 10};
 }
 
 void Maze::Draw() const
 {
-    for (int row = 0; row < GetRows(); row++) {
-        for (int col = 0; col < GetCols(); col++) {
-            if (layout[row][col] == '#') {
+    for (int row = 0; row < GetRows(); row++)
+    {
+        for (int col = 0; col < GetCols(); col++)
+        {
+            if (layout[row][col] == '#')
+            {
                 DrawRectangle(
                     col * tileSize,
                     row * tileSize,
                     tileSize,
                     tileSize,
-                    DARKGRAY
-                );
+                    DARKGRAY);
             }
         }
     }
+
+    int padding = 8;
+
+    float x = static_cast<float>(goalCell.col * tileSize);
+    float y = static_cast<float>(goalCell.row * tileSize);
+
+    Vector2 top = {
+        x + tileSize / 2.0f,
+        y + padding};
+
+    Vector2 left = {
+        x + padding,
+        y + tileSize - padding};
+
+    Vector2 right = {
+        x + tileSize - padding,
+        y + tileSize - padding};
+
+    DrawTriangle(top, left, right, GOLD);
 }
 
 bool Maze::IsWallCell(Cell cell) const
 {
-    if (cell.row < 0 || cell.row >= GetRows()) {
+    if (cell.row < 0 || cell.row >= GetRows())
+    {
         return true;
     }
 
-    if (cell.col < 0 || cell.col >= GetCols()) {
+    if (cell.col < 0 || cell.col >= GetCols())
+    {
         return true;
     }
 
@@ -67,4 +91,9 @@ int Maze::GetCols() const
 Cell Maze::GetStartCell() const
 {
     return startCell;
+}
+
+Cell Maze::GetGoalCell() const
+{
+    return goalCell;
 }

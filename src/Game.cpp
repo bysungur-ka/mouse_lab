@@ -4,12 +4,17 @@
 
 Game::Game()
     : maze(),
-      mouse(maze.GetStartCell())
+      mouse(maze.GetStartCell()),
+      levelCompleted(false)
 {
 }
 
 void Game::Update()
 {
+     if (levelCompleted) {
+        return;
+    }
+
     Action action = ReadInput();
     TryMoveMouse(action);
 }
@@ -18,6 +23,10 @@ void Game::Draw() const
 {
     maze.Draw();
     DrawMouse();
+
+    if (levelCompleted) {
+        DrawText("LEVEL COMPLETED", 20, 20, 24, GREEN);
+    }
 }
 
 int Game::GetScreenWidth() const
@@ -90,6 +99,17 @@ void Game::TryMoveMouse(Action action)
 
     if (!maze.IsWallCell(targetCell)) {
         mouse.MoveTo(targetCell);
+        CheckGoalReached();
+    }
+}
+
+void Game::CheckGoalReached()
+{
+    Cell mouseCell = mouse.GetCell();
+    Cell goalCell = maze.GetGoalCell();
+
+    if (mouseCell.row == goalCell.row && mouseCell.col == goalCell.col) {
+        levelCompleted = true;
     }
 }
 

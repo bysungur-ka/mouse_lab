@@ -18,9 +18,11 @@ public:
     int GetCols() const;
 
     Cell GetStartCell() const;
+    Cell GetGoalCell() const;
 
 private:
     std::vector<std::string> layout;
     int tileSize;
     Cell startCell;
+    Cell goalCell;
 };

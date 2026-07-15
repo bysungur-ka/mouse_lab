@@ -18,9 +18,12 @@ private:
     Maze maze;
     Mouse mouse;
 
+    bool levelCompleted;
+
     Action ReadInput() const;
     Cell GetTargetCell(Action action) const;
     void TryMoveMouse(Action action);
+    void CheckGoalReached();
 
     void DrawMouse() const;
 };
