@@ -3,8 +3,10 @@
 #include "GridTypes.h"
 #include "Mouse.h"
 #include "Maze.h"
+#include "raylib.h"
 
-class Game {
+class Game
+{
 public:
     Game();
 
@@ -15,15 +17,25 @@ public:
     int GetScreenHeight() const;
 
 private:
+    enum class State
+    {
+        Playing,
+        LevelCompleted
+    };
+
     Maze maze;
     Mouse mouse;
-
-    bool levelCompleted;
+    State state;
 
     Action ReadInput() const;
     Cell GetTargetCell(Action action) const;
     void TryMoveMouse(Action action);
     void CheckGoalReached();
+    void ResetLevel();
+
+    void DrawLevelCompletedModal() const;
+    Rectangle GetResetButtonRect() const;
+    bool IsResetButtonClicked() const;
 
     void DrawMouse() const;
 };
