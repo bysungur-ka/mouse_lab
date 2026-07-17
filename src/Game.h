@@ -26,6 +26,7 @@ private:
     Maze maze;
     Mouse mouse;
     State state;
+    int moveCount;
 
     Action ReadInput() const;
     Cell GetTargetCell(Action action) const;
@@ -38,4 +39,5 @@ private:
     bool IsResetButtonClicked() const;
 
     void DrawMouse() const;
+    void DrawHud() const;
 };
