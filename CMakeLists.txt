@@ -9,5 +9,6 @@ find_package(raylib REQUIRED)
 add_executable(mouse_front src/main.cpp
     src/Mouse.cpp
     src/Game.cpp
-    src/Maze.cpp)
+    src/Maze.cpp
+    src/screens/MainMenuScreen.cpp)
 target_link_libraries(mouse_front PRIVATE raylib)
