@@ -5,15 +5,16 @@
 #include "AppContext.h"
 #include "raylib.h"
 
-class MainMenuScreen : public Screen {
+class MainMenuScreen : public Screen
+{
 public:
-    explicit MainMenuScreen(AppContext& context);
+    explicit MainMenuScreen(AppContext &context);
 
     std::optional<ScreenType> Update() override;
     void Draw() const override;
 
 private:
-    AppContext& context;
+    AppContext &context;
 
     Rectangle GetStartButtonRect() const;
     bool IsStartButtonClicked() const;

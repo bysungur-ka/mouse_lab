@@ -1,47 +1,24 @@
 #include "raylib.h"
-#include "screens/AppContext.h"
-#include "screens/MainMenuScreen.h"
-#include "screens/ProfileSetupScreen.h"
-#include <optional>
+#include "GameApp.h"
 
 int main()
 {
-
-    AppContext context;
-    MainMenuScreen mainMenu(context);
-    ProfileSetupScreen profileSetup(context);
-    ScreenType activeScreen = ScreenType::MainMenu;
+    GameApp app;
 
     InitWindow(
-        context.screenWidth,
-        context.screenHeight,
-        "Mouse Lab");
+        app.GetScreenWidth(),
+        app.GetScreenHeight(),
+        "Mouse Lab"
+    );
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
-        std::optional<ScreenType> nextScreen = std::nullopt;
-
-        if (activeScreen == ScreenType::MainMenu)
-        {
-            nextScreen = mainMenu.Update();
-        }
-
-        if (activeScreen == ScreenType::ProfileSetup)
-        {
-            nextScreen = profileSetup.Update();
-        }
-
-        if (nextScreen.has_value()) {
-            activeScreen = nextScreen.value();
-        }
+        app.Update();
 
         BeginDrawing();
-
-        if (activeScreen == ScreenType::MainMenu) mainMenu.Draw();
-        if (activeScreen == ScreenType::ProfileSetup) profileSetup.Draw();
-
+        app.Draw();
         EndDrawing();
     }
 
