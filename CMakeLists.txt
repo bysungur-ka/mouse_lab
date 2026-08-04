@@ -12,6 +12,7 @@ add_executable(mouse_front src/main.cpp
     src/Maze.cpp
     src/screens/MainMenuScreen.cpp
     src/screens/ProfileSetupScreen.cpp
+    src/screens/IntroScreen.cpp
     src/GameApp.cpp)
     
 target_link_libraries(mouse_front PRIVATE raylib)

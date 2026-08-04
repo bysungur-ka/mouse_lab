@@ -1,6 +1,9 @@
+#pragma once
+
 #include "screens/AppContext.h"
 #include "screens/MainMenuScreen.h"
 #include "screens/ProfileSetupScreen.h"
+#include "screens/IntroScreen.h"
 
 class GameApp
 {
@@ -16,5 +19,6 @@ private:
     AppContext context;
     MainMenuScreen mainMenu;
     ProfileSetupScreen profileSetup;
+    IntroScreen intro;
     ScreenType activeScreen;
 };
