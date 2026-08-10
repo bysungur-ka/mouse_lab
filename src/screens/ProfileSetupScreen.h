@@ -5,16 +5,23 @@
 #include "AppContext.h"
 #include "raylib.h"
 
-class ProfileSetupScreen : public Screen {
+class ProfileSetupScreen : public Screen
+{
 public:
-    explicit ProfileSetupScreen(AppContext& context);
+    explicit ProfileSetupScreen(AppContext &context);
 
     std::optional<ScreenType> Update() override;
     void Draw() const override;
 
 private:
-    AppContext& context;
+    AppContext &context;
 
     Rectangle GetContinueButtonRect() const;
     bool IsContinueButtonClicked() const;
+
+    Rectangle GetBadgeRect() const;
+    Rectangle GetNameInputRect() const;
+
+    void UpdateNameInput();
+    void DrawBadge() const;
 };

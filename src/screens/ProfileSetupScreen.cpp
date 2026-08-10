@@ -1,13 +1,21 @@
 #include "ProfileSetupScreen.h"
 
-ProfileSetupScreen::ProfileSetupScreen(AppContext& context)
+ProfileSetupScreen::ProfileSetupScreen(AppContext &context)
     : context(context)
 {
+    if (context.profile.name.empty())
+    {
+        context.profile.name = "Text here";
+    }
 }
 
 std::optional<ScreenType> ProfileSetupScreen::Update()
 {
-    if (IsContinueButtonClicked()) {
+
+    UpdateNameInput();
+
+    if (IsContinueButtonClicked())
+    {
         return ScreenType::Intro;
     }
 
@@ -18,7 +26,9 @@ void ProfileSetupScreen::Draw() const
 {
     ClearBackground(Color{18, 22, 28, 255});
 
-    const char* title = "PROFILE SETUP";
+    DrawBadge();
+
+    const char *title = "PROFILE SETUP";
     int titleFontSize = 48;
     int titleWidth = MeasureText(title, titleFontSize);
 
@@ -27,10 +37,9 @@ void ProfileSetupScreen::Draw() const
         (context.screenWidth - titleWidth) / 2,
         90,
         titleFontSize,
-        RAYWHITE
-    );
+        RAYWHITE);
 
-    const char* subtitle = "Choose your laboratory avatar";
+    const char *subtitle = "Choose your laboratory avatar";
     int subtitleFontSize = 20;
     int subtitleWidth = MeasureText(subtitle, subtitleFontSize);
 
@@ -39,8 +48,7 @@ void ProfileSetupScreen::Draw() const
         (context.screenWidth - subtitleWidth) / 2,
         150,
         subtitleFontSize,
-        LIGHTGRAY
-    );
+        LIGHTGRAY);
 
     Rectangle button = GetContinueButtonRect();
     bool hovered = CheckCollisionPointRec(GetMousePosition(), button);
@@ -48,7 +56,7 @@ void ProfileSetupScreen::Draw() const
     DrawRectangleRec(button, hovered ? LIGHTGRAY : GOLD);
     DrawRectangleLinesEx(button, 2.0f, DARKGRAY);
 
-    const char* buttonText = "CONTINUE";
+    const char *buttonText = "CONTINUE";
     int buttonFontSize = 24;
     int buttonTextWidth = MeasureText(buttonText, buttonFontSize);
 
@@ -57,8 +65,7 @@ void ProfileSetupScreen::Draw() const
         static_cast<int>(button.x + (button.width - buttonTextWidth) / 2),
         static_cast<int>(button.y + 13),
         buttonFontSize,
-        DARKGRAY
-    );
+        DARKGRAY);
 }
 
 Rectangle ProfileSetupScreen::GetContinueButtonRect() const
@@ -68,16 +75,80 @@ Rectangle ProfileSetupScreen::GetContinueButtonRect() const
 
     return {
         (context.screenWidth - width) / 2.0f,
-        240.0f,
+        context.screenHeight - 1.5f*height,
         width,
-        height
-    };
+        height};
 }
 
 bool ProfileSetupScreen::IsContinueButtonClicked() const
 {
     Rectangle button = GetContinueButtonRect();
 
-    return CheckCollisionPointRec(GetMousePosition(), button)
-        && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+    return CheckCollisionPointRec(GetMousePosition(), button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 }
+
+void ProfileSetupScreen::UpdateNameInput()
+{
+    int key = GetCharPressed();
+
+    while (key > 0) {
+        if (key >= 32 && key <= 126 && context.profile.name.size() < 18) {
+            context.profile.name += static_cast<char>(key);
+        }
+
+        key = GetCharPressed();
+    }
+
+    if (IsKeyPressed(KEY_BACKSPACE) && !context.profile.name.empty()) {
+        context.profile.name.pop_back();
+    }
+}
+
+Rectangle ProfileSetupScreen::GetBadgeRect() const
+{
+   return {
+        280.0f,
+        200.0f,
+        400.0f,
+        250.0f
+    };
+}
+
+Rectangle ProfileSetupScreen::GetNameInputRect() const
+{
+    Rectangle badge = GetBadgeRect();
+
+    return {
+        badge.x + 40.0f,
+        badge.y + 90.0f,
+        badge.width - 80.0f,
+        42.0f
+    };
+}
+
+void ProfileSetupScreen::DrawBadge() const
+{
+    Rectangle badge = GetBadgeRect();
+    Rectangle nameInput = GetNameInputRect();
+
+    DrawRectangleRec(badge, Color{235, 235, 225, 255});
+    DrawRectangleLinesEx(badge, 3.0f, GOLD);
+
+    DrawText("MOUSE LAB", static_cast<int>(badge.x + 30), static_cast<int>(badge.y + 25), 24, DARKGRAY);
+
+    DrawText("NAME", static_cast<int>(nameInput.x), static_cast<int>(nameInput.y - 24), 16, DARKGRAY);
+    DrawRectangleRec(nameInput, RAYWHITE);
+    DrawRectangleLinesEx(nameInput, 2.0f, DARKGRAY);
+
+    DrawText(
+        context.profile.name.c_str(),
+        static_cast<int>(nameInput.x + 10),
+        static_cast<int>(nameInput.y + 10),
+        20,
+        DARKGRAY
+    );
+
+    DrawText("POSITION", static_cast<int>(badge.x + 40), static_cast<int>(badge.y + 155), 16, DARKGRAY);
+    DrawText("Laboratory Worker", static_cast<int>(badge.x + 40), static_cast<int>(badge.y + 180), 22, DARKGRAY);
+}
+
