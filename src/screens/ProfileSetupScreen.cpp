@@ -1,3 +1,4 @@
+#include <string>
 #include "ProfileSetupScreen.h"
 
 ProfileSetupScreen::ProfileSetupScreen(AppContext &context)
@@ -7,6 +8,8 @@ ProfileSetupScreen::ProfileSetupScreen(AppContext &context)
     {
         context.profile.name = "Text here";
     }
+
+    nameCursorPosition = context.profile.name.size();
 }
 
 std::optional<ScreenType> ProfileSetupScreen::Update()
@@ -75,7 +78,7 @@ Rectangle ProfileSetupScreen::GetContinueButtonRect() const
 
     return {
         (context.screenWidth - width) / 2.0f,
-        context.screenHeight - 1.5f*height,
+        context.screenHeight - 1.5f * height,
         width,
         height};
 }
@@ -91,27 +94,62 @@ void ProfileSetupScreen::UpdateNameInput()
 {
     int key = GetCharPressed();
 
-    while (key > 0) {
-        if (key >= 32 && key <= 126 && context.profile.name.size() < 18) {
-            context.profile.name += static_cast<char>(key);
+    while (key > 0)
+    {
+        if (key >= 32 && key <= 126 && context.profile.name.size() < 18)
+        {
+            context.profile.name.insert(
+                context.profile.name.begin() + nameCursorPosition,
+                static_cast<char>(key));
+
+            nameCursorPosition++;
         }
 
         key = GetCharPressed();
     }
 
-    if (IsKeyPressed(KEY_BACKSPACE) && !context.profile.name.empty()) {
-        context.profile.name.pop_back();
+    float dt = GetFrameTime();
+
+    if (IsKeyPressed(KEY_BACKSPACE) && nameCursorPosition > 0)
+    {
+        context.profile.name.erase(nameCursorPosition - 1, 1);
+        nameCursorPosition--;
+        backspaceRepeatTimer = 0.35f;
+    }
+    else if (IsKeyDown(KEY_BACKSPACE))
+    {
+        backspaceRepeatTimer -= dt;
+
+        if (backspaceRepeatTimer <= 0.0f && nameCursorPosition > 0)
+        {
+            context.profile.name.erase(nameCursorPosition - 1, 1);
+            nameCursorPosition--;
+            backspaceRepeatTimer = 0.05f;
+        }
+    }
+    else
+    {
+        backspaceRepeatTimer = 0.0f;
+    }
+
+    if (IsKeyPressed(KEY_LEFT) && nameCursorPosition > 0)
+    {
+        nameCursorPosition--;
+    }
+
+    if (IsKeyPressed(KEY_RIGHT) && nameCursorPosition < context.profile.name.size())
+    {
+        nameCursorPosition++;
     }
 }
 
 Rectangle ProfileSetupScreen::GetBadgeRect() const
 {
-   return {
+    return {
         280.0f,
         200.0f,
         400.0f,
-        250.0f
-    };
+        250.0f};
 }
 
 Rectangle ProfileSetupScreen::GetNameInputRect() const
@@ -122,8 +160,7 @@ Rectangle ProfileSetupScreen::GetNameInputRect() const
         badge.x + 40.0f,
         badge.y + 90.0f,
         badge.width - 80.0f,
-        42.0f
-    };
+        42.0f};
 }
 
 void ProfileSetupScreen::DrawBadge() const
@@ -145,10 +182,21 @@ void ProfileSetupScreen::DrawBadge() const
         static_cast<int>(nameInput.x + 10),
         static_cast<int>(nameInput.y + 10),
         20,
-        DARKGRAY
-    );
+        DARKGRAY);
+
+    std::string textBeforeCursor = context.profile.name.substr(0, nameCursorPosition);
+    int textBeforeCursorWidth = MeasureText(textBeforeCursor.c_str(), 20);
+
+    int cursorX = static_cast<int>(nameInput.x + 10 + textBeforeCursorWidth);
+    int cursorY = static_cast<int>(nameInput.y + 9);
+
+    bool showCursor = static_cast<int>(GetTime() * 2) % 2 == 0;
+
+    if (showCursor)
+    {
+        DrawRectangle(cursorX, cursorY, 2, 24, DARKGRAY);
+    }
 
     DrawText("POSITION", static_cast<int>(badge.x + 40), static_cast<int>(badge.y + 155), 16, DARKGRAY);
     DrawText("Laboratory Worker", static_cast<int>(badge.x + 40), static_cast<int>(badge.y + 180), 22, DARKGRAY);
 }
-

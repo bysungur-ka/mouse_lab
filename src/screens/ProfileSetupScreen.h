@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <optional>
 #include "Screen.h"
 #include "AppContext.h"
@@ -15,6 +16,8 @@ public:
 
 private:
     AppContext &context;
+    std::size_t nameCursorPosition = 0;
+    float backspaceRepeatTimer = 0.0f;
 
     Rectangle GetContinueButtonRect() const;
     bool IsContinueButtonClicked() const;
