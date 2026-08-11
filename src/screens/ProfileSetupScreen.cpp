@@ -27,6 +27,8 @@ std::optional<ScreenType> ProfileSetupScreen::Update()
     return std::nullopt;
 }
 
+// TODO: Add back arrow button to return from ProfileSetup to MainMenu.
+
 void ProfileSetupScreen::Draw() const
 {
     ClearBackground(Color{18, 22, 28, 255});
