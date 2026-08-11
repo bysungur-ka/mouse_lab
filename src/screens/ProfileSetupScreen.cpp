@@ -17,6 +17,8 @@ std::optional<ScreenType> ProfileSetupScreen::Update()
 
     UpdateNameInput();
 
+    UpdateAvatarSelection();
+
     if (IsContinueButtonClicked())
     {
         return ScreenType::Intro;
@@ -30,6 +32,8 @@ void ProfileSetupScreen::Draw() const
     ClearBackground(Color{18, 22, 28, 255});
 
     DrawBadge();
+
+    DrawAvatarCards();
 
     const char *title = "PROFILE SETUP";
     int titleFontSize = 48;
@@ -199,4 +203,96 @@ void ProfileSetupScreen::DrawBadge() const
 
     DrawText("POSITION", static_cast<int>(badge.x + 40), static_cast<int>(badge.y + 155), 16, DARKGRAY);
     DrawText("Laboratory Worker", static_cast<int>(badge.x + 40), static_cast<int>(badge.y + 180), 22, DARKGRAY);
+}
+
+Rectangle ProfileSetupScreen::GetFemaleAvatarRect() const
+{
+    Rectangle badge = GetBadgeRect();
+
+    float width = 170.0f;
+    float height = 250.0f;
+    float gap = 30.0f;
+
+    return {
+        badge.x - gap - width,
+        badge.y,
+        width,
+        height
+    };
+}
+
+Rectangle ProfileSetupScreen::GetMaleAvatarRect() const
+{
+    Rectangle badge = GetBadgeRect();
+
+    float width = 170.0f;
+    float height = 250.0f;
+    float gap = 30.0f;
+
+    return {
+        badge.x + badge.width + gap,
+        badge.y,
+        width,
+        height
+    };
+}
+
+void ProfileSetupScreen::UpdateAvatarSelection()
+{
+    Rectangle female = GetFemaleAvatarRect();
+    Rectangle male = GetMaleAvatarRect();
+
+    if (CheckCollisionPointRec(GetMousePosition(), female) &&
+        IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        context.profile.avatar = AvatarType::FemaleLabAssistant;
+    }
+
+    if (CheckCollisionPointRec(GetMousePosition(), male) &&
+        IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        context.profile.avatar = AvatarType::MaleLabAssistant;
+    }
+}
+
+void ProfileSetupScreen::DrawAvatarCards() const
+{
+    Rectangle female = GetFemaleAvatarRect();
+    Rectangle male = GetMaleAvatarRect();
+
+    bool femaleSelected =
+        context.profile.avatar == AvatarType::FemaleLabAssistant;
+
+    bool maleSelected =
+        context.profile.avatar == AvatarType::MaleLabAssistant;
+
+    DrawRectangleRec(female, Color{235, 235, 225, 255});
+    DrawRectangleLinesEx(
+        female,
+        femaleSelected ? 4.0f : 2.0f,
+        femaleSelected ? GOLD : DARKGRAY
+    );
+
+    DrawText(
+        "FEMALE",
+        static_cast<int>(female.x + 42),
+        static_cast<int>(female.y + 110),
+        22,
+        DARKGRAY
+    );
+
+    DrawRectangleRec(male, Color{235, 235, 225, 255});
+    DrawRectangleLinesEx(
+        male,
+        maleSelected ? 4.0f : 2.0f,
+        maleSelected ? GOLD : DARKGRAY
+    );
+
+    DrawText(
+        "MALE",
+        static_cast<int>(male.x + 55),
+        static_cast<int>(male.y + 110),
+        22,
+        DARKGRAY
+    );
 }

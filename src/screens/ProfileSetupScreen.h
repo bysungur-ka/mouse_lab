@@ -27,4 +27,10 @@ private:
 
     void UpdateNameInput();
     void DrawBadge() const;
+
+    Rectangle GetFemaleAvatarRect() const;
+    Rectangle GetMaleAvatarRect() const;
+
+    void UpdateAvatarSelection();
+    void DrawAvatarCards() const;
 };
