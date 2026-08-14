@@ -14,6 +14,7 @@ add_executable(mouse_front src/main.cpp
     src/screens/ProfileSetupScreen.cpp
     src/screens/IntroScreen.cpp
     src/GameApp.cpp
-    src/screens/LaboratoryHubScreen.cpp)
+    src/screens/LaboratoryHubScreen.cpp
+    src/screens/MazeRunScreen.cpp)
     
 target_link_libraries(mouse_front PRIVATE raylib)

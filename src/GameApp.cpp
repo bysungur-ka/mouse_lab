@@ -8,6 +8,7 @@ GameApp::GameApp()
       profileSetup(context),
       intro(context),
       laboratoryHub(context),
+      mazeRun(),
       activeScreen(ScreenType::MainMenu)
 {
 }
@@ -28,6 +29,9 @@ void GameApp::Update()
     else if (activeScreen == ScreenType::LaboratoryHub) {
     nextScreen = laboratoryHub.Update();
     }
+    else if (activeScreen == ScreenType::MazeRun) {
+    nextScreen = mazeRun.Update();
+    }
 
     if (nextScreen.has_value()) {
         activeScreen = nextScreen.value();
@@ -47,6 +51,9 @@ void GameApp::Draw() const
     }
     else if (activeScreen == ScreenType::LaboratoryHub) {
     laboratoryHub.Draw();
+    }
+    else if (activeScreen == ScreenType::MazeRun) {
+    mazeRun.Draw();
     }
 }
 

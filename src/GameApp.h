@@ -5,6 +5,8 @@
 #include "screens/ProfileSetupScreen.h"
 #include "screens/IntroScreen.h"
 #include "screens/LaboratoryHubScreen.h"
+#include "screens/MazeRunScreen.h"
+
 
 class GameApp
 {
@@ -22,5 +24,6 @@ private:
     ProfileSetupScreen profileSetup;
     IntroScreen intro;
     LaboratoryHubScreen laboratoryHub;
+    MazeRunScreen mazeRun;
     ScreenType activeScreen;
 };
