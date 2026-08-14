@@ -7,6 +7,7 @@ GameApp::GameApp()
       mainMenu(context),
       profileSetup(context),
       intro(context),
+      laboratoryHub(context),
       activeScreen(ScreenType::MainMenu)
 {
 }
@@ -24,6 +25,9 @@ void GameApp::Update()
     else if (activeScreen == ScreenType::Intro) {
         nextScreen = intro.Update();
     }
+    else if (activeScreen == ScreenType::LaboratoryHub) {
+    nextScreen = laboratoryHub.Update();
+    }
 
     if (nextScreen.has_value()) {
         activeScreen = nextScreen.value();
@@ -40,6 +44,9 @@ void GameApp::Draw() const
     }
     else if (activeScreen == ScreenType::Intro) {
         intro.Draw();
+    }
+    else if (activeScreen == ScreenType::LaboratoryHub) {
+    laboratoryHub.Draw();
     }
 }
 

@@ -4,6 +4,7 @@
 #include "screens/MainMenuScreen.h"
 #include "screens/ProfileSetupScreen.h"
 #include "screens/IntroScreen.h"
+#include "screens/LaboratoryHubScreen.h"
 
 class GameApp
 {
@@ -20,5 +21,6 @@ private:
     MainMenuScreen mainMenu;
     ProfileSetupScreen profileSetup;
     IntroScreen intro;
+    LaboratoryHubScreen laboratoryHub;
     ScreenType activeScreen;
 };
