@@ -4,12 +4,13 @@
 #include <vector>
 
 #include "GridTypes.h"
+#include "raylib.h"
 
 class Maze {
 public:
     Maze();
 
-    void Draw() const;
+    void Draw(Vector2 origin = {0.0f, 0.0f}) const;
 
     bool IsWallCell(Cell cell) const;
 

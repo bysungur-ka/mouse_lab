@@ -10,8 +10,8 @@ class Game
 public:
     Game();
 
-    void Update();
-    void Draw() const;
+    void Update(Vector2 origin = {0.0f, 0.0f});
+    void Draw(Vector2 origin = {0.0f, 0.0f}) const;
 
     int GetScreenWidth() const;
     int GetScreenHeight() const;
@@ -34,10 +34,10 @@ private:
     void CheckGoalReached();
     void ResetLevel();
 
-    void DrawLevelCompletedModal() const;
-    Rectangle GetResetButtonRect() const;
-    bool IsResetButtonClicked() const;
+    void DrawLevelCompletedModal(Vector2 origin) const;
+    Rectangle GetResetButtonRect(Vector2 origin) const;
+    bool IsResetButtonClicked(Vector2 origin) const;
 
-    void DrawMouse() const;
-    void DrawHud() const;
+    void DrawMouse(Vector2 origin) const;
+    void DrawHud(Vector2 origin) const;
 };

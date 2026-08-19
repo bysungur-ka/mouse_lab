@@ -10,7 +10,7 @@ Game::Game()
 {
 }
 
-void Game::Update()
+void Game::Update(Vector2 origin)
 {
     if (state == State::Playing)
     {
@@ -21,7 +21,7 @@ void Game::Update()
 
     if (state == State::LevelCompleted)
     {
-        if (IsResetButtonClicked())
+        if (IsResetButtonClicked(origin))
         {
             ResetLevel();
         }
@@ -30,15 +30,15 @@ void Game::Update()
     }
 }
 
-void Game::Draw() const
+void Game::Draw(Vector2 origin) const
 {
-    maze.Draw();
-    DrawMouse();
-    DrawHud();
+    maze.Draw(origin);
+    DrawMouse(origin);
+    DrawHud(origin);
 
     if (state == State::LevelCompleted)
     {
-        DrawLevelCompletedModal();
+        DrawLevelCompletedModal(origin);
     }
 }
 
@@ -142,7 +142,7 @@ void Game::ResetLevel()
     state = State::Playing;
 }
 
-void Game::DrawLevelCompletedModal() const
+void Game::DrawLevelCompletedModal(Vector2 origin) const
 {
     float modalWidth = 280.0f;
     float modalHeight = 150.0f;
@@ -172,7 +172,7 @@ void Game::DrawLevelCompletedModal() const
         titleFontSize,
         DARKGRAY);
 
-    Rectangle button = GetResetButtonRect();
+    Rectangle button = GetResetButtonRect(origin);
     Vector2 mousePosition = GetMousePosition();
     bool hovered = CheckCollisionPointRec(mousePosition, button);
 
@@ -191,7 +191,7 @@ void Game::DrawLevelCompletedModal() const
         DARKGRAY);
 }
 
-Rectangle Game::GetResetButtonRect() const
+Rectangle Game::GetResetButtonRect(Vector2 origin) const
 {
     float buttonWidth = 140.0f;
     float buttonHeight = 42.0f;
@@ -206,15 +206,15 @@ Rectangle Game::GetResetButtonRect() const
         buttonHeight};
 }
 
-bool Game::IsResetButtonClicked() const
+bool Game::IsResetButtonClicked(Vector2 origin) const
 {
-    Rectangle button = GetResetButtonRect();
+    Rectangle button = GetResetButtonRect(origin);
     Vector2 mousePosition = GetMousePosition();
 
     return CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 }
 
-void Game::DrawMouse() const
+void Game::DrawMouse(Vector2 origin) const
 {
     Cell cell = mouse.GetCell();
     int tileSize = maze.GetTileSize();
@@ -222,22 +222,22 @@ void Game::DrawMouse() const
     int padding = 6;
 
     DrawRectangle(
-        cell.col * tileSize + padding,
-        cell.row * tileSize + padding,
+        static_cast<int>(origin.x + cell.col * tileSize + padding),
+        static_cast<int>(origin.y + cell.row * tileSize + padding),
         tileSize - 2 * padding,
         tileSize - 2 * padding,
         RED);
 }
 
-void Game::DrawHud() const
+void Game::DrawHud(Vector2 origin) const
 {
     const char* text = TextFormat("MOVES: %d", moveCount);
     int fontSize = 20;
 
     int textWidth = MeasureText(text, fontSize);
 
-    int x = (GetScreenWidth() - textWidth) / 2;
-    int y = 8;
+    int x = static_cast<int>(origin.x + (GetScreenWidth() - textWidth) / 2);
+    int y = static_cast<int>(origin.y + 8);
 
     DrawText(
         text,

@@ -8,7 +8,7 @@ GameApp::GameApp()
       profileSetup(context),
       intro(context),
       laboratoryHub(context),
-      mazeRun(),
+      mazeRun(context),
       activeScreen(ScreenType::MainMenu)
 {
 }

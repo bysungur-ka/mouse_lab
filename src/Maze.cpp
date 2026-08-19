@@ -20,7 +20,7 @@ Maze::Maze()
     goalCell = {1, 10};
 }
 
-void Maze::Draw() const
+void Maze::Draw(Vector2 origin) const
 {
     for (int row = 0; row < GetRows(); row++)
     {
@@ -29,8 +29,8 @@ void Maze::Draw() const
             if (layout[row][col] == '#')
             {
                 DrawRectangle(
-                    col * tileSize,
-                    row * tileSize,
+                    static_cast<int>(origin.x + col * tileSize),
+                    static_cast<int>(origin.y + row * tileSize),
                     tileSize,
                     tileSize,
                     DARKGRAY);
@@ -40,8 +40,8 @@ void Maze::Draw() const
 
     int padding = 8;
 
-    float x = static_cast<float>(goalCell.col * tileSize);
-    float y = static_cast<float>(goalCell.row * tileSize);
+    float x = origin.x + static_cast<float>(goalCell.col * tileSize);
+    float y = origin.y + static_cast<float>(goalCell.row * tileSize);
 
     Vector2 top = {
         x + tileSize / 2.0f,
