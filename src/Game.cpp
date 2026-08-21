@@ -147,8 +147,8 @@ void Game::DrawLevelCompletedModal(Vector2 origin) const
     float modalWidth = 280.0f;
     float modalHeight = 150.0f;
 
-    float modalX = (GetScreenWidth() - modalWidth) / 2.0f;
-    float modalY = (GetScreenHeight() - modalHeight) / 2.0f;
+    float modalX = origin.x + (GetScreenWidth() - modalWidth) / 2.0f;
+    float modalY = origin.y + (GetScreenHeight() - modalHeight) / 2.0f;
 
     Rectangle modal = {
         modalX,
@@ -156,7 +156,12 @@ void Game::DrawLevelCompletedModal(Vector2 origin) const
         modalWidth,
         modalHeight};
 
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{0, 0, 0, 90});
+    DrawRectangle(
+        static_cast<int>(origin.x),
+        static_cast<int>(origin.y),
+        GetScreenWidth(),
+        GetScreenHeight(),
+        Color{0, 0, 0, 90});
 
     DrawRectangleRec(modal, RAYWHITE);
     DrawRectangleLinesEx(modal, 2.0f, DARKGRAY);
@@ -196,8 +201,8 @@ Rectangle Game::GetResetButtonRect(Vector2 origin) const
     float buttonWidth = 140.0f;
     float buttonHeight = 42.0f;
 
-    float x = (GetScreenWidth() - buttonWidth) / 2.0f;
-    float y = (GetScreenHeight() / 2.0f) + 25.0f;
+    float x = origin.x + (GetScreenWidth() - buttonWidth) / 2.0f;
+    float y = origin.y + (GetScreenHeight() / 2.0f) + 25.0f;
 
     return {
         x,
