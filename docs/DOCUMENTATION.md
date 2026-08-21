@@ -83,6 +83,8 @@ MainMenu -> ProfileSetup -> Intro -> LaboratoryHub -> MazeRun
 - быть полноценным экраном забега;
 - рисовать фон, header, panel, footer;
 - размещать лабиринт внутри отдельной панели;
+- рисовать modal `LEVEL COMPLETED` и затемнение поверх лабиринта (относительно `origin`);
+- рисовать и обрабатывать кнопку `RESET`, сбрасывая уровень через `Game`;
 - давать возможность вернуться в `LaboratoryHub`.
 
 ## Gameplay
@@ -102,8 +104,8 @@ MainMenu -> ProfileSetup -> Intro -> LaboratoryHub -> MazeRun
 - стены блокируют движение;
 - считается количество успешных ходов `MOVES`;
 - при достижении цели уровень считается завершённым;
-- после завершения показывается modal `LEVEL COMPLETED`;
-- есть кнопка `RESET`.
+- `Game` хранит состояние завершения и счётчик ходов и предоставляет `IsLevelCompleted()`, `GetMoveCount()` и `ResetLevel()`;
+- modal `LEVEL COMPLETED`, затемнение и кнопка `RESET` рисуются и обрабатываются на стороне `MazeRunScreen`.
 
 ## Архитектура экранов
 
@@ -147,7 +149,6 @@ MainMenu -> ProfileSetup -> Intro -> LaboratoryHub -> MazeRun
 Текущий технический фокус:
 
 - довести `MazeRunScreen` до полноценного экрана забега;
-- сделать так, чтобы `Game`, `Maze`, мышь, HUD, modal и reset-кнопка рисовались относительно `origin`;
 - сохранить старую механику движения;
 - не ломать существующие переходы между экранами.
 

@@ -10,24 +10,15 @@ Game::Game()
 {
 }
 
-void Game::Update(Vector2 origin)
+void Game::Update(Vector2)
 {
-    if (state == State::Playing)
+    if (state != State::Playing)
     {
-        Action action = ReadInput();
-        TryMoveMouse(action);
         return;
     }
 
-    if (state == State::LevelCompleted)
-    {
-        if (IsResetButtonClicked(origin))
-        {
-            ResetLevel();
-        }
-
-        return;
-    }
+    Action action = ReadInput();
+    TryMoveMouse(action);
 }
 
 void Game::Draw(Vector2 origin) const
@@ -35,11 +26,23 @@ void Game::Draw(Vector2 origin) const
     maze.Draw(origin);
     DrawMouse(origin);
     DrawHud(origin);
+}
 
-    if (state == State::LevelCompleted)
-    {
-        DrawLevelCompletedModal(origin);
-    }
+bool Game::IsLevelCompleted() const
+{
+    return state == State::LevelCompleted;
+}
+
+int Game::GetMoveCount() const
+{
+    return moveCount;
+}
+
+void Game::ResetLevel()
+{
+    mouse.MoveTo(maze.GetStartCell());
+    moveCount = 0;
+    state = State::Playing;
 }
 
 int Game::GetScreenWidth() const
@@ -133,90 +136,6 @@ void Game::CheckGoalReached()
     {
         state = State::LevelCompleted;
     }
-}
-
-void Game::ResetLevel()
-{
-    mouse.MoveTo(maze.GetStartCell());
-    moveCount = 0;
-    state = State::Playing;
-}
-
-void Game::DrawLevelCompletedModal(Vector2 origin) const
-{
-    float modalWidth = 280.0f;
-    float modalHeight = 150.0f;
-
-    float modalX = origin.x + (GetScreenWidth() - modalWidth) / 2.0f;
-    float modalY = origin.y + (GetScreenHeight() - modalHeight) / 2.0f;
-
-    Rectangle modal = {
-        modalX,
-        modalY,
-        modalWidth,
-        modalHeight};
-
-    DrawRectangle(
-        static_cast<int>(origin.x),
-        static_cast<int>(origin.y),
-        GetScreenWidth(),
-        GetScreenHeight(),
-        Color{0, 0, 0, 90});
-
-    DrawRectangleRec(modal, RAYWHITE);
-    DrawRectangleLinesEx(modal, 2.0f, DARKGRAY);
-
-    const char *title = "LEVEL COMPLETED";
-    int titleFontSize = 22;
-    int titleWidth = MeasureText(title, titleFontSize);
-
-    DrawText(
-        title,
-        static_cast<int>(modal.x + (modal.width - titleWidth) / 2.0f),
-        static_cast<int>(modal.y + 25.0f),
-        titleFontSize,
-        DARKGRAY);
-
-    Rectangle button = GetResetButtonRect(origin);
-    Vector2 mousePosition = GetMousePosition();
-    bool hovered = CheckCollisionPointRec(mousePosition, button);
-
-    DrawRectangleRec(button, hovered ? LIGHTGRAY : GOLD);
-    DrawRectangleLinesEx(button, 2.0f, DARKGRAY);
-
-    const char *buttonText = "RESET";
-    int buttonFontSize = 20;
-    int buttonTextWidth = MeasureText(buttonText, buttonFontSize);
-
-    DrawText(
-        buttonText,
-        static_cast<int>(button.x + (button.width - buttonTextWidth) / 2.0f),
-        static_cast<int>(button.y + 10.0f),
-        buttonFontSize,
-        DARKGRAY);
-}
-
-Rectangle Game::GetResetButtonRect(Vector2 origin) const
-{
-    float buttonWidth = 140.0f;
-    float buttonHeight = 42.0f;
-
-    float x = origin.x + (GetScreenWidth() - buttonWidth) / 2.0f;
-    float y = origin.y + (GetScreenHeight() / 2.0f) + 25.0f;
-
-    return {
-        x,
-        y,
-        buttonWidth,
-        buttonHeight};
-}
-
-bool Game::IsResetButtonClicked(Vector2 origin) const
-{
-    Rectangle button = GetResetButtonRect(origin);
-    Vector2 mousePosition = GetMousePosition();
-
-    return CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 }
 
 void Game::DrawMouse(Vector2 origin) const

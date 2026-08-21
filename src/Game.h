@@ -13,6 +13,10 @@ public:
     void Update(Vector2 origin = {0.0f, 0.0f});
     void Draw(Vector2 origin = {0.0f, 0.0f}) const;
 
+    bool IsLevelCompleted() const;
+    int GetMoveCount() const;
+    void ResetLevel();
+
     int GetScreenWidth() const;
     int GetScreenHeight() const;
 
@@ -32,11 +36,6 @@ private:
     Cell GetTargetCell(Action action) const;
     void TryMoveMouse(Action action);
     void CheckGoalReached();
-    void ResetLevel();
-
-    void DrawLevelCompletedModal(Vector2 origin) const;
-    Rectangle GetResetButtonRect(Vector2 origin) const;
-    bool IsResetButtonClicked(Vector2 origin) const;
 
     void DrawMouse(Vector2 origin) const;
     void DrawHud(Vector2 origin) const;

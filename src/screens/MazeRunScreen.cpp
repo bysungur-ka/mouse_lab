@@ -14,7 +14,14 @@ std::optional<ScreenType> MazeRunScreen::Update()
         return ScreenType::LaboratoryHub;
     }
 
-    game.Update(GetGameOrigin());
+    if (!game.IsLevelCompleted())
+    {
+        game.Update(GetGameOrigin());
+    }
+    else if (IsResetButtonClicked())
+    {
+        game.ResetLevel();
+    }
 
     return std::nullopt;
 }
@@ -27,6 +34,11 @@ void MazeRunScreen::Draw() const
     DrawMazePanel();
 
     game.Draw(GetGameOrigin());
+
+    if (game.IsLevelCompleted())
+    {
+        DrawLevelCompletedModal();
+    }
 
     DrawFooter();
 }
@@ -64,6 +76,30 @@ Rectangle MazeRunScreen::GetLabHubButtonRect() const
 bool MazeRunScreen::IsLabHubButtonClicked() const
 {
     Rectangle button = GetLabHubButtonRect();
+
+    return CheckCollisionPointRec(GetMousePosition(), button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+}
+
+Rectangle MazeRunScreen::GetResetButtonRect() const
+{
+    Vector2 origin = GetGameOrigin();
+
+    float buttonWidth = 140.0f;
+    float buttonHeight = 42.0f;
+
+    float x = origin.x + (game.GetScreenWidth() - buttonWidth) / 2.0f;
+    float y = origin.y + (game.GetScreenHeight() / 2.0f) + 25.0f;
+
+    return {
+        x,
+        y,
+        buttonWidth,
+        buttonHeight};
+}
+
+bool MazeRunScreen::IsResetButtonClicked() const
+{
+    Rectangle button = GetResetButtonRect();
 
     return CheckCollisionPointRec(GetMousePosition(), button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 }
@@ -111,6 +147,64 @@ void MazeRunScreen::DrawMazePanel() const
 
     DrawRectangleRec(panel, Color{235, 235, 225, 255});
     DrawRectangleLinesEx(panel, 3.0f, GOLD);
+}
+
+void MazeRunScreen::DrawLevelCompletedModal() const
+{
+    Vector2 origin = GetGameOrigin();
+    float gameWidth = static_cast<float>(game.GetScreenWidth());
+    float gameHeight = static_cast<float>(game.GetScreenHeight());
+
+    float modalWidth = 280.0f;
+    float modalHeight = 150.0f;
+
+    float modalX = origin.x + (gameWidth - modalWidth) / 2.0f;
+    float modalY = origin.y + (gameHeight - modalHeight) / 2.0f;
+
+    Rectangle modal = {
+        modalX,
+        modalY,
+        modalWidth,
+        modalHeight};
+
+    DrawRectangle(
+        static_cast<int>(origin.x),
+        static_cast<int>(origin.y),
+        game.GetScreenWidth(),
+        game.GetScreenHeight(),
+        Color{0, 0, 0, 90});
+
+    DrawRectangleRec(modal, RAYWHITE);
+    DrawRectangleLinesEx(modal, 2.0f, DARKGRAY);
+
+    const char *title = "LEVEL COMPLETED";
+    int titleFontSize = 22;
+    int titleWidth = MeasureText(title, titleFontSize);
+
+    DrawText(
+        title,
+        static_cast<int>(modal.x + (modal.width - titleWidth) / 2.0f),
+        static_cast<int>(modal.y + 25.0f),
+        titleFontSize,
+        DARKGRAY);
+
+    Rectangle button = GetResetButtonRect();
+    Vector2 mousePosition = GetMousePosition();
+    bool hovered = CheckCollisionPointRec(mousePosition, button);
+
+    DrawRectangleRec(button, hovered ? LIGHTGRAY : GOLD);
+    DrawRectangleLinesEx(button, 2.0f, DARKGRAY);
+
+    const char *buttonText = "RESET";
+    int buttonFontSize = 20;
+    int buttonTextWidth = MeasureText(buttonText, buttonFontSize);
+
+    DrawText(
+        buttonText,
+        static_cast<int>(button.x + (button.width - buttonTextWidth) / 2.0f),
+        static_cast<int>(button.y + 10.0f),
+        buttonFontSize,
+        DARKGRAY);
 }
 
 void MazeRunScreen::DrawFooter() const

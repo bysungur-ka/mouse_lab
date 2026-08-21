@@ -24,7 +24,11 @@ private:
     Rectangle GetLabHubButtonRect() const;
     bool IsLabHubButtonClicked() const;
 
+    Rectangle GetResetButtonRect() const;
+    bool IsResetButtonClicked() const;
+
     void DrawHeader() const;
     void DrawMazePanel() const;
     void DrawFooter() const;
+    void DrawLevelCompletedModal() const;
 };
